@@ -26,21 +26,6 @@ npm run dev
 - Frontend: http://localhost:5173
 - Backend: http://localhost:5000
 
-## Contact Email Setup
-
-Messages are sent to **vithusha014@gmail.com**.
-
-1. Enable 2FA on your Google account
-2. Create an [App Password](https://myaccount.google.com/apppasswords)
-3. Add to Vercel Environment Variables (or `server/.env` locally):
-
-| Variable | Value |
-|----------|-------|
-| `CONTACT_TO_EMAIL` | `vithusha014@gmail.com` |
-| `SMTP_HOST` | `smtp.gmail.com` |
-| `SMTP_PORT` | `587` |
-| `SMTP_USER` | `vithusha014@gmail.com` |
-| `SMTP_PASS` | your Gmail app password |
 
 ## Deploy to Vercel
 
