@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { personalInfo } from '../data/portfolioData';
 import ParticleNetwork from './ParticleNetwork';
+import { scrollToSection } from '../utils/scroll';
 
 const container = {
   hidden: { opacity: 0 },
@@ -21,9 +22,7 @@ const item = {
 };
 
 export default function Hero() {
-  const scrollTo = (id) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-  };
+  const scrollTo = (id) => scrollToSection(id);
 
   return (
     <section id="home" className="relative min-h-screen flex items-center overflow-hidden pt-20">
