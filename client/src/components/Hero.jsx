@@ -25,7 +25,7 @@ export default function Hero() {
   const scrollTo = (id) => scrollToSection(id);
 
   return (
-    <section id="home" className="relative min-h-screen flex items-center overflow-hidden pt-20">
+    <section id="home" className="relative min-h-[100dvh] min-h-screen flex items-center overflow-hidden pt-16 md:pt-20">
       {/* Layered background */}
       <div className="absolute inset-0 bg-gray-950 dark:bg-gray-950" />
       <div className="absolute inset-0 hero-gradient-mesh" />

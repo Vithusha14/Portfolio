@@ -5,10 +5,23 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 4.5rem;
+  }
+
+  @media (min-width: 768px) {
+    html {
+      scroll-padding-top: 5.5rem;
+    }
   }
 
   section[id] {
-    scroll-margin-top: 5.5rem;
+    scroll-margin-top: 4.5rem;
+  }
+
+  @media (min-width: 768px) {
+    section[id] {
+      scroll-margin-top: 5.5rem;
+    }
   }
 
   #home {

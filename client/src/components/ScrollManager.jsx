@@ -1,5 +1,20 @@
 import { useEffect } from 'react';
-import { scrollToSection } from '../utils/scroll';
+import { scrollToSection, scrollToTop } from '../utils/scroll';
+
+function applyInitialScroll() {
+  const hash = window.location.hash.slice(1);
+
+  if (hash && document.getElementById(hash)) {
+    scrollToSection(hash, { smooth: false });
+    return;
+  }
+
+  scrollToTop({ smooth: false });
+
+  if (hash) {
+    window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+  }
+}
 
 export default function ScrollManager() {
   useEffect(() => {
@@ -7,20 +22,15 @@ export default function ScrollManager() {
       window.history.scrollRestoration = 'manual';
     }
 
-    const hash = window.location.hash.slice(1);
-    const scrollToInitialTarget = () => {
-      if (hash && document.getElementById(hash)) {
-        scrollToSection(hash, { smooth: false });
-      } else {
-        window.scrollTo(0, 0);
-        if (hash) {
-          window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
-        }
-      }
+    const isMobile = window.matchMedia('(max-width: 1023px)').matches;
+    const initialDelay = isMobile ? 120 : 0;
+
+    const scheduleInitialScroll = () => {
+      window.setTimeout(applyInitialScroll, initialDelay);
     };
 
     requestAnimationFrame(() => {
-      requestAnimationFrame(scrollToInitialTarget);
+      requestAnimationFrame(scheduleInitialScroll);
     });
 
     const handleHashChange = () => {
@@ -42,11 +52,18 @@ export default function ScrollManager() {
       scrollToSection(id);
     };
 
+    const handlePageShow = (event) => {
+      if (!event.persisted) return;
+      applyInitialScroll();
+    };
+
     window.addEventListener('hashchange', handleHashChange);
+    window.addEventListener('pageshow', handlePageShow);
     document.addEventListener('click', handleAnchorClick);
 
     return () => {
       window.removeEventListener('hashchange', handleHashChange);
+      window.removeEventListener('pageshow', handlePageShow);
       document.removeEventListener('click', handleAnchorClick);
     };
   }, []);

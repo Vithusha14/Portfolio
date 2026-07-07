@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Sun, Moon } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { navLinks } from '../data/portfolioData';
-import { scrollToSection } from '../utils/scroll';
+import { getNavbarOffset, scrollToSection } from '../utils/scroll';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,26 +12,44 @@ export default function Navbar() {
   const { darkMode, toggleTheme } = useTheme();
 
   useEffect(() => {
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
+  useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
 
+      const offset = getNavbarOffset() + 24;
       const sections = navLinks.map((link) => link.id);
+
       for (const section of sections.reverse()) {
         const el = document.getElementById(section);
-        if (el && el.getBoundingClientRect().top <= 150) {
+        if (el && el.getBoundingClientRect().top <= offset) {
           setActiveSection(section);
           break;
         }
       }
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
   }, []);
 
   const scrollTo = (id) => {
-    scrollToSection(id);
+    const menuWasOpen = isOpen;
     setIsOpen(false);
+
+    scrollToSection(id, {
+      delay: menuWasOpen ? 320 : 0,
+    });
   };
 
   return (
@@ -42,7 +60,7 @@ export default function Navbar() {
         scrolled ? 'glass shadow-lg' : 'bg-transparent'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" data-nav-header>
         <div className="flex items-center justify-between h-16 md:h-20">
           <motion.a
             href="#home"
