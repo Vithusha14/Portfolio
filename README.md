@@ -1,12 +1,9 @@
-# Vithusha Pathmanathan — Portfolio
+# Vithusha Pathmanathan - Portfolio
 # https://vithusha-one.vercel.app/
 
 Modern MERN portfolio with AI chat assistant, contact form, and Vercel deployment.
 
 ## Live Demo
-
-Deploy to [Vercel](https://vercel.com) — see [Deploy to Vercel](#deploy-to-vercel) below.
-
 ## Features
 
 - Premium responsive UI with light/dark mode
